@@ -1,0 +1,15 @@
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/bin/Debug/net9.0/AuthFlowPro.Application.deps.json
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/bin/Debug/net9.0/AuthFlowPro.Application.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/bin/Debug/net9.0/AuthFlowPro.Application.pdb
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/bin/Debug/net9.0/AuthFlowPro.Domain.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/bin/Debug/net9.0/AuthFlowPro.Domain.pdb
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.csproj.AssemblyReference.cache
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.GeneratedMSBuildEditorConfig.editorconfig
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.AssemblyInfoInputs.cache
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.AssemblyInfo.cs
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.csproj.CoreCompileInputs.cache
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlow.4DDCE519.Up2Date
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/refint/AuthFlowPro.Application.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/AuthFlowPro.Application.pdb
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Application/obj/Debug/net9.0/ref/AuthFlowPro.Application.dll
