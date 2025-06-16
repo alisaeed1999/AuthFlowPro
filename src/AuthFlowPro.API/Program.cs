@@ -26,6 +26,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer(); // Required
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -34,7 +36,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-        app.UseSwagger();
+    app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthFlowPro API v1");
@@ -44,6 +46,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.UseHttpsRedirection();
 

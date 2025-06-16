@@ -1,6 +1,8 @@
 ﻿
+using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Domain.Entities;
 using AuthFlowPro.Infrastructure.Data;
+using AuthFlowPro.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +24,10 @@ public static class DependencyInjection
         })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
+
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ITokenService, TokenService>();
+
 
 
         return services;
