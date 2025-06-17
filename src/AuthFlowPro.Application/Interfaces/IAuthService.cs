@@ -5,6 +5,6 @@ namespace AuthFlowPro.Application.Interfaces;
 public interface IAuthService
 {
     Task<AuthResult> RegisterAsync(RegisterRequest request);
-    Task<AuthResponse> LoginAsync(LoginRequest request);
-    Task<AuthResult> RefreshTokenAsync(string token);
+    Task<AuthResult> LoginAsync(LoginRequest request);
+    Task<AuthResult> RefreshTokenAsync(string token , string refreshToken);
 }

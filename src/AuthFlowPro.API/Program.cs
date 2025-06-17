@@ -3,39 +3,75 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using AuthFlowPro.Infrastructure;
 using AuthFlowPro.Application;
+using AuthFlowPro.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using AuthFlowPro.Infrastructure.Data;
+using AuthFlowPro.Application.Permission;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-            ValidateIssuer = false,
-            ValidateAudience = false
+            
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
+            ClockSkew = TimeSpan.Zero // optional: prevents time drift allowing expired tokens briefly
         };
     });
 
-builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+
+builder.Services.AddAuthorization(options =>
+{
+    foreach (var role in RolePermissions.PermissionsByRole)
+    {
+        foreach (var permission in role.Value.Distinct())
+        {
+            options.AddPolicy(permission, policy =>
+                policy.RequireClaim("permission", permission));
+        }
+    }
+});
+
 builder.Services.AddEndpointsApiExplorer(); // Required
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    await DbSeeder.SeedDefaultRolesAndPermissionsAsync(roleManager);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
@@ -44,12 +80,17 @@ if (app.Environment.IsDevelopment())
 
 }
 
+app.UseHttpsRedirection();
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseHttpsRedirection();
+// app.MapGet("/api/Test", () => "Hello from Program.cs");
+
+
 
 app.Run();
 

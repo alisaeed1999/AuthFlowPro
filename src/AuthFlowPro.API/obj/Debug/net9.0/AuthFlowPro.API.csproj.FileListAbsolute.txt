@@ -27,6 +27,7 @@
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.Caching.Abstractions.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.Caching.Memory.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.Configuration.Binder.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Microsoft.Extensions.DependencyModel.dll

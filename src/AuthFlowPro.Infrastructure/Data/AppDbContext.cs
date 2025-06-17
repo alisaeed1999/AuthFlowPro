@@ -21,8 +21,9 @@ public class AppDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid
     {
         entity.HasKey(rt => rt.Id);
         entity.HasOne(rt => rt.User)
-              .WithMany()
-              .HasForeignKey(rt => rt.UserId);
+              .WithMany(u => u.RefreshTokens)
+              .HasForeignKey(rt => rt.UserId)
+              .IsRequired();
     });
 }
 

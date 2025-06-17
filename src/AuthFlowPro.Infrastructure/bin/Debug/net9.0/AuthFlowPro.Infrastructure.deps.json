@@ -13,6 +13,7 @@
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.6",
           "Microsoft.EntityFrameworkCore": "9.0.6",
           "Microsoft.EntityFrameworkCore.Design": "9.0.6",
+          "Microsoft.Extensions.Configuration.Binder": "9.0.6",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "System.IdentityModel.Tokens.Jwt": "8.12.0"
         },
@@ -631,6 +632,17 @@
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
+            "assemblyVersion": "9.0.0.0",
+            "fileVersion": "9.0.625.26613"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Binder/9.0.6": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "9.0.6"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Binder.dll": {
             "assemblyVersion": "9.0.0.0",
             "fileVersion": "9.0.625.26613"
           }
@@ -1289,6 +1301,13 @@
       "sha512": "sha512-3GgMIi2jP8g1fBW93Z9b9Unamc0SIsgyhiCmC91gq4loTixK9vQMuxxUsfJ1kRGwn+/FqLKwOHqmn0oYWn3Fvw==",
       "path": "microsoft.extensions.configuration.abstractions/9.0.6",
       "hashPath": "microsoft.extensions.configuration.abstractions.9.0.6.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Binder/9.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Opl/7SIrwDy9WjHn/vU2thQ8CUtrIWHLr+89I7/0VYNEJQvpL24zvqYrh83cH38RzNKHji0WGVkCVP6HJChVVw==",
+      "path": "microsoft.extensions.configuration.binder/9.0.6",
+      "hashPath": "microsoft.extensions.configuration.binder.9.0.6.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/9.0.6": {
       "type": "package",

@@ -1,7 +1,9 @@
-﻿using AuthFlowPro.Application.DTOs.Auth;
+﻿using System.Security.Claims;
+using AuthFlowPro.Application.DTOs.Auth;
 using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AuthFlowPro.Infrastructure.Services;
@@ -46,37 +48,97 @@ public class AuthService : IAuthService
             };
         }
 
-        //TODO : Generate JWT and refreshToken 
+        var token = await _tokenService.GenerateTokenAsync(newUser);
+        var refreshToken = _tokenService.GenerateRefreshToken(newUser.Id);
+
+        // TODO: Store the refresh token in DB (later step)
+        // Store refresh token in DB
+        newUser.RefreshTokens.Add(refreshToken);
+        await _userManager.UpdateAsync(newUser);
+
         return new AuthResult
         {
             IsSuccess = true,
-            AccessToken = "accessToken",
-            RefreshToken = "refreshToken"
+            AccessToken = token.AccessToken,
+            RefreshToken = refreshToken.Token,
+            ExpiresAt = token.Expires
         };
     }
 
-    public async Task<AuthResponse> LoginAsync(LoginRequest request)
+    public async Task<AuthResult> LoginAsync(LoginRequest request)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-    if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
-        throw new UnauthorizedAccessException("Invalid credentials");
+        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            return new AuthResult
+            {
+                IsSuccess = false,
+                Errors = new List<string> { "invalid email or password" }
+            };
+        }
 
-    var token = _tokenService.GenerateToken(user);
-    var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
+        var token = await _tokenService.GenerateTokenAsync(user);
+        var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
-    // You can store refresh token in DB here if needed.
+        // You can store refresh token in DB here if needed.
+        // Store refresh token in DB
+        user.RefreshTokens.Add(refreshToken);
+        await _userManager.UpdateAsync(user);
 
-    return new AuthResponse
-    {
-        Token = token.AccessToken,
-        RefreshToken = refreshToken.Token,
-        ExpiresAt = token.Expires
-    };
+        return new AuthResult
+        {
+            IsSuccess = true,
+            AccessToken = token.AccessToken,
+            RefreshToken = refreshToken.Token,
+            ExpiresAt = token.Expires
+        };
     }
 
-    public Task<AuthResult> RefreshTokenAsync(string token)
+    public async Task<AuthResult> RefreshTokenAsync(string accessToken, string refreshToken)
     {
-        throw new NotImplementedException();
+        var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
+        if (principal == null)
+        {
+            return new AuthResult { IsSuccess = false, Errors = new() { "Invalid access token" } };
+        }
+
+        var userId = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userId, out var userGuid))
+        {
+            return new AuthResult { IsSuccess = false, Errors = new() { "Invalid user ID" } };
+        }
+
+        var user = await _userManager.Users.Include(u => u.RefreshTokens)
+            .FirstOrDefaultAsync(u => u.Id == userGuid);
+
+        if (user == null)
+            return new AuthResult { IsSuccess = false, Errors = new() { "User not found" } };
+
+        var storedToken = user.RefreshTokens.FirstOrDefault(rt =>
+            rt.Token == refreshToken &&
+            rt.Expires > DateTime.UtcNow &&
+            !rt.IsUsed &&
+            !rt.IsRevoked);
+
+        if (storedToken == null)
+            return new AuthResult { IsSuccess = false, Errors = new() { "Invalid refresh token" } };
+
+        storedToken.IsUsed = true;
+        await _userManager.UpdateAsync(user);
+
+        var newAccessToken = await _tokenService.GenerateTokenAsync(user);
+        var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
+
+        user.RefreshTokens.Add(newRefreshToken);
+        await _userManager.UpdateAsync(user);
+
+        return new AuthResult
+        {
+            IsSuccess = true,
+            AccessToken = newAccessToken.AccessToken,
+            RefreshToken = newRefreshToken.Token
+        };
     }
+
 
 }

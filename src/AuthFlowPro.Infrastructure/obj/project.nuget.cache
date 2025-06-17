@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "OhqZXeDehoo=",
+  "dgSpecHash": "Mijj7WtXmtg=",
   "success": true,
   "projectFilePath": "/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Infrastructure/AuthFlowPro.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -39,6 +39,7 @@
     "/home/alisaeed/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.6/microsoft.extensions.caching.abstractions.9.0.6.nupkg.sha512",
     "/home/alisaeed/.nuget/packages/microsoft.extensions.caching.memory/9.0.6/microsoft.extensions.caching.memory.9.0.6.nupkg.sha512",
     "/home/alisaeed/.nuget/packages/microsoft.extensions.configuration.abstractions/9.0.6/microsoft.extensions.configuration.abstractions.9.0.6.nupkg.sha512",
+    "/home/alisaeed/.nuget/packages/microsoft.extensions.configuration.binder/9.0.6/microsoft.extensions.configuration.binder.9.0.6.nupkg.sha512",
     "/home/alisaeed/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.6/microsoft.extensions.dependencyinjection.9.0.6.nupkg.sha512",
     "/home/alisaeed/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.6/microsoft.extensions.dependencyinjection.abstractions.9.0.6.nupkg.sha512",
     "/home/alisaeed/.nuget/packages/microsoft.extensions.dependencymodel/9.0.6/microsoft.extensions.dependencymodel.9.0.6.nupkg.sha512",
