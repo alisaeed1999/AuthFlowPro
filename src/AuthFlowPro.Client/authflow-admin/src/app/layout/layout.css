@@ -1,0 +1,35 @@
+.layout-container {
+  height: 100vh;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.main-content {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px); /* Adjust height under toolbar */
+}
+
+mat-sidenav {
+  width: 220px;
+  background-color: #f5f5f5;
+}
+
+mat-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #333;
+  text-decoration: none;
+}
+
+mat-nav-list a.active {
+  background: #e0e0e0;
+  font-weight: 600;
+}
