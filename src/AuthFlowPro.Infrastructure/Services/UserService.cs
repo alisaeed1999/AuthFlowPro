@@ -36,10 +36,7 @@ public class UserService : IUserService
         return result;
     }
 
-    public async Task<List<string>> GetAllRolesAsync()
-    {
-        return await _roleManager.Roles.Select(r => r.Name!).ToListAsync();
-    }
+    
 
     public async Task<bool> AssignRolesAsync(AssignRolesRequest request)
     {

@@ -10,3 +10,4 @@
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Domain/obj/Debug/net9.0/refint/AuthFlowPro.Domain.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Domain/obj/Debug/net9.0/AuthFlowPro.Domain.pdb
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Domain/obj/Debug/net9.0/ref/AuthFlowPro.Domain.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Domain/obj/Debug/net9.0/AuthFlowPro.Domain.sourcelink.json

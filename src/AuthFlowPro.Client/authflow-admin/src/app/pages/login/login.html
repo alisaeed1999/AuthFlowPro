@@ -1,0 +1,24 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+    <h2 class="title">Welcome Back 👋</h2>
+    
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="full-width">Login</button>
+    </form>
+
+    <div class="register-link">
+      <span>Don't have an account?</span>
+      <a routerLink="/register">Register here</a>
+    </div>
+  </mat-card>
+</div>

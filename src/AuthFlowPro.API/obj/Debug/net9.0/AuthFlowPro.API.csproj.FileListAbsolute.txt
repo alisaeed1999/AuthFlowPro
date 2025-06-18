@@ -150,3 +150,4 @@
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/AuthFlowPro.API.pdb
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/AuthFlowPro.API.genruntimeconfig.cache
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/ref/AuthFlowPro.API.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/AuthFlowPro.API.sourcelink.json

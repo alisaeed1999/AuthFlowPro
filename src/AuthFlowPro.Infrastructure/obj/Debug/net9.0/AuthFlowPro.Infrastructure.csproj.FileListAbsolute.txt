@@ -17,3 +17,4 @@
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Infrastructure/obj/Debug/net9.0/AuthFlowPro.Infrastructure.pdb
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Infrastructure/obj/Debug/net9.0/AuthFlowPro.Infrastructure.genruntimeconfig.cache
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Infrastructure/obj/Debug/net9.0/ref/AuthFlowPro.Infrastructure.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.Infrastructure/obj/Debug/net9.0/AuthFlowPro.Infrastructure.sourcelink.json

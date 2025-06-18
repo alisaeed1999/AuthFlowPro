@@ -25,12 +25,6 @@ public class AdminController : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("roles")]
-    public async Task<IActionResult> GetAllRoles()
-    {
-        var roles = await _userService.GetAllRolesAsync();
-        return Ok(roles);
-    }
 
     [Authorize(Policy = Permissions.User.Edit)]
     [HttpPost("assign-roles")]
