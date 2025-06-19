@@ -33,3 +33,16 @@ mat-nav-list a.active {
   background: #e0e0e0;
   font-weight: 600;
 }
+
+.menu-btn {
+  display: none;
+}
+@media (max-width: 768px) {
+  mat-sidenav {
+    width: 200px;
+  }
+  .menu-btn {
+    display: inline-flex;
+  }
+}
+

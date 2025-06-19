@@ -31,7 +31,15 @@ namespace AuthFlowPro.API.Controllers
             {
                 return BadRequest(result);
             }
-            return Ok(result);
+
+            SetRefreshTokenCookie(result.RefreshToken, result.ExpiresAt);
+
+            return Ok(new
+            {
+                result.AccessToken,
+                result.IsSuccess,
+                result.ExpiresAt
+            });
         }
 
         [HttpPost("login")]
@@ -42,21 +50,58 @@ namespace AuthFlowPro.API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+
+            SetRefreshTokenCookie(result.RefreshToken, result.ExpiresAt);
+
+            return Ok(new
+            {
+                result.AccessToken,
+                result.IsSuccess,
+                result.ExpiresAt
+            });
         }
 
         // File: API/Controllers/AuthController.cs
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] TokenRequest request)
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequest? request)
         {
-            var result = await _authService.RefreshTokenAsync(request.AccessToken, request.RefreshToken);
+
+            var accessToken = request?.AccessToken;
+            var refreshToken = Request?.Cookies["refreshToken"];
+
+            if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(refreshToken))
+                return BadRequest("Missing tokens.");
+
+            var result = await _authService.RefreshTokenAsync(accessToken, refreshToken);
             if (!result.IsSuccess)
             {
                 return BadRequest(result);
             }
-            return Ok(result);
+
+            SetRefreshTokenCookie(result.RefreshToken, result.ExpiresAt);
+
+            return Ok(new
+            {
+                result.AccessToken,
+                result.ExpiresAt,
+                result.IsSuccess
+            });
         }
+
+        private void SetRefreshTokenCookie(string refreshToken, DateTime expires)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = expires
+            };
+
+            Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
+        }
+
 
     }
 }

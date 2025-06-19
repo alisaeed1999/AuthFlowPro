@@ -22,21 +22,32 @@ public class AuthService : IAuthService
     }
     public async Task<AuthResult> RegisterAsync(RegisterRequest request)
     {
-        var existingUser = await _userManager.FindByEmailAsync(request.Email);
-        if (existingUser != null)
+        var existingEmailUser = await _userManager.FindByEmailAsync(request.Email);
+    if (existingEmailUser != null)
+    {
+        return new AuthResult
         {
-            return new AuthResult
-            {
-                IsSuccess = false,
-                Errors = new List<string> { "Email already is registered" }
-            };
-        }
+            IsSuccess = false,
+            Errors = new List<string> { "Email is already registered" }
+        };
+    }
 
+    var existingUsernameUser = await _userManager.Users
+        .FirstOrDefaultAsync(u => u.UserName == request.UserName);
+
+    if (existingUsernameUser != null)
+    {
+        return new AuthResult
+        {
+            IsSuccess = false,
+            Errors = new List<string> { "Username is already taken" }
+        };
+    }
         var newUser = new ApplicationUser
         {
             Id = Guid.NewGuid(),
             Email = request.Email,
-            UserName = request.Email
+            UserName = request.UserName
         };
         var result = await _userManager.CreateAsync(newUser, request.Password);
         if (!result.Succeeded)
@@ -47,6 +58,8 @@ public class AuthService : IAuthService
                 Errors = result.Errors.Select(e => e.Description).ToList()
             };
         }
+
+        await _userManager.AddToRoleAsync(newUser, "Basic");
 
         var token = await _tokenService.GenerateTokenAsync(newUser);
         var refreshToken = _tokenService.GenerateRefreshToken(newUser.Id);

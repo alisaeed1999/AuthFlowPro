@@ -57,6 +57,17 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddEndpointsApiExplorer(); // Required
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // If you're using cookies or credentials
+    });
+});
+
 var app = builder.Build();
 
 await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
@@ -79,6 +90,8 @@ if (app.Environment.IsDevelopment())
     });
 
 }
+
+app.UseCors("AllowAngularDev");
 
 app.UseHttpsRedirection();
 app.UseRouting();
