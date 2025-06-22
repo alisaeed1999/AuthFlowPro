@@ -19,6 +19,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpGet("users")]
+    [Authorize(Policy = Permissions.User.View)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsersAsync();

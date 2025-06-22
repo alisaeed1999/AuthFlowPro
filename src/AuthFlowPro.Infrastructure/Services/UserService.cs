@@ -29,6 +29,7 @@ public class UserService : IUserService
             {
                 Id = user.Id,
                 Email = user.Email ?? "",
+                userName = user.UserName ?? "",
                 Roles = roles.ToList()
             });
         }

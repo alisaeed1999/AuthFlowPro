@@ -1,18 +1,36 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { UserService } from '../../services/user-service';
+import { User } from '../../models/user-model';
+import { UpdateUserRoles } from '../../models/update-user-role-model';
+
 
 @Component({
   selector: 'app-user-list',
-  imports: [CommonModule, MatTableModule, MatCardModule],
+  imports: [CommonModule, MatTableModule, MatCardModule , AsyncPipe],
   templateUrl: './user-list.html',
-  styleUrl: './user-list.css'
+  styleUrl: './user-list.css',
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
+  users: User[] = [];
   displayedColumns: string[] = ['id', 'name', 'email', 'role'];
-  users = [
-    { id: 1, name: 'Ali Saeed', email: 'ali@example.com', role: 'Admin' },
-    { id: 2, name: 'John Doe', email: 'john@example.com', role: 'Manager' }
-  ];
+
+  constructor(private userService: UserService,) {}
+
+  ngOnInit(): void {
+    this.userService.getAllUsers().subscribe(users => {
+      this.users = users;
+    });
+  }
+
+  // onUpdateRoles(userId: string) {
+  //   const roles = this.roleForms[userId].value.roles;
+  //   const payload: UpdateUserRoles = { userId, roles };
+  //   this.userService.updateUserRoles(payload).subscribe({
+  //     next: () => alert('Roles updated!'),
+  //     error: () => alert('Error updating roles')
+  //   });
+  // }
 }

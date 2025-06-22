@@ -33,12 +33,27 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            
+
             ValidIssuer = jwtSettings["Issuer"],
             ValidAudience = jwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
             ClockSkew = TimeSpan.Zero // optional: prevents time drift allowing expired tokens briefly
         };
+
+        // Optional: Handle expired tokens
+        // options.Events = new JwtBearerEvents
+        // {
+        //     OnAuthenticationFailed = context =>
+        //     {
+        //         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+        //         {
+        //             context.Response.StatusCode = 401;
+        //             context.Response.Headers.Add("Token-Expired", "true");
+        //         }
+
+        //         return Task.CompletedTask;
+        //     }
+        // };
     });
 
 

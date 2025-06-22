@@ -1,4 +1,3 @@
-// auth-interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth-service';
@@ -29,8 +28,8 @@ export const authInterceptor: HttpInterceptorFn = (
       if (error.status === 401) {
         return authService.refreshToken().pipe(
           switchMap(res => {
-            if (res.isSuccess) {
-              const newReq = req.clone({
+            if (res.isSuccess && res.accessToken) {
+              const newReq = cloned.clone({
                 setHeaders: {
                   Authorization: `Bearer ${res.accessToken}`
                 },
