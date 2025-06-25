@@ -2,6 +2,7 @@
 using AuthFlowPro.Application.DTOs.Auth;
 using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Domain.Entities;
+using AuthFlowPro.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,36 +14,41 @@ public class AuthService : IAuthService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly ITokenService _tokenService;
     private readonly IConfiguration _configuration;
+    private readonly AppDbContext _context;
 
-    public AuthService(UserManager<ApplicationUser> userManager, ITokenService tokenService, IConfiguration configuration)
+    public AuthService(UserManager<ApplicationUser> userManager,
+    ITokenService tokenService,
+    IConfiguration configuration,
+    AppDbContext context)
     {
         _userManager = userManager;
         _configuration = configuration;
         _tokenService = tokenService;
+        _context = context;
     }
     public async Task<AuthResult> RegisterAsync(RegisterRequest request)
     {
         var existingEmailUser = await _userManager.FindByEmailAsync(request.Email);
-    if (existingEmailUser != null)
-    {
-        return new AuthResult
+        if (existingEmailUser != null)
         {
-            IsSuccess = false,
-            Errors = new List<string> { "Email is already registered" }
-        };
-    }
+            return new AuthResult
+            {
+                IsSuccess = false,
+                Errors = new List<string> { "Email is already registered" }
+            };
+        }
 
-    var existingUsernameUser = await _userManager.Users
-        .FirstOrDefaultAsync(u => u.UserName == request.UserName);
+        var existingUsernameUser = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.UserName == request.UserName);
 
-    if (existingUsernameUser != null)
-    {
-        return new AuthResult
+        if (existingUsernameUser != null)
         {
-            IsSuccess = false,
-            Errors = new List<string> { "Username is already taken" }
-        };
-    }
+            return new AuthResult
+            {
+                IsSuccess = false,
+                Errors = new List<string> { "Username is already taken" }
+            };
+        }
         var newUser = new ApplicationUser
         {
             Id = Guid.NewGuid(),
@@ -61,13 +67,25 @@ public class AuthService : IAuthService
 
         await _userManager.AddToRoleAsync(newUser, "Basic");
 
+        var existingTokens = await _context.RefreshTokens
+    .Where(rt => rt.UserId == newUser.Id && !rt.IsRevoked && !rt.IsUsed)
+    .ToListAsync();
+
+        foreach (var t in existingTokens)
+        {
+            t.IsUsed = true;
+            t.IsRevoked = true;
+        }
+
         var token = await _tokenService.GenerateTokenAsync(newUser);
         var refreshToken = _tokenService.GenerateRefreshToken(newUser.Id);
 
         // TODO: Store the refresh token in DB (later step)
         // Store refresh token in DB
-        newUser.RefreshTokens.Add(refreshToken);
-        await _userManager.UpdateAsync(newUser);
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
+        // newUser.RefreshTokens.Add(refreshToken);
+        // await _userManager.UpdateAsync(newUser);
 
         return new AuthResult
         {
@@ -90,13 +108,25 @@ public class AuthService : IAuthService
             };
         }
 
+        var existingTokens = await _context.RefreshTokens
+    .Where(rt => rt.UserId == user.Id && !rt.IsRevoked && !rt.IsUsed)
+    .ToListAsync();
+
+        foreach (var t in existingTokens)
+        {
+            t.IsUsed = true;
+            t.IsRevoked = true;
+        }
+
         var token = await _tokenService.GenerateTokenAsync(user);
         var refreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
         // You can store refresh token in DB here if needed.
         // Store refresh token in DB
-        user.RefreshTokens.Add(refreshToken);
-        await _userManager.UpdateAsync(user);
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
+        // user.RefreshTokens.Add(refreshToken);
+        // await _userManager.UpdateAsync(user);
 
         return new AuthResult
         {
@@ -148,6 +178,7 @@ public class AuthService : IAuthService
         return new AuthResult
         {
             IsSuccess = true,
+            ExpiresAt = newAccessToken.Expires,
             AccessToken = newAccessToken.AccessToken,
             RefreshToken = newRefreshToken.Token
         };

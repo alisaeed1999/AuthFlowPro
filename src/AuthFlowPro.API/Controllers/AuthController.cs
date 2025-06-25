@@ -91,11 +91,13 @@ namespace AuthFlowPro.API.Controllers
 
         private void SetRefreshTokenCookie(string refreshToken, DateTime expires)
         {
+            if (expires < DateTime.UtcNow)
+                expires = DateTime.UtcNow.AddDays(7);
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
+                Secure = false, // Changed to false for local development to allow cookie over HTTP
+                SameSite = SameSiteMode.Lax, // Changed to Lax for better compatibility
                 Expires = expires
             };
 

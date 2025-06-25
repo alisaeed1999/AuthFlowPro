@@ -85,7 +85,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
+
 
 using (var scope = app.Services.CreateScope())
 {
@@ -93,6 +93,8 @@ using (var scope = app.Services.CreateScope())
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
     await DbSeeder.SeedDefaultRolesAndPermissionsAsync(roleManager);
 }
+
+await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
