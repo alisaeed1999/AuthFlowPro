@@ -106,7 +106,6 @@ export class AuthService {
 
   refreshToken(): Observable<AuthResponse> {
     const accessToken = this.getToken();
-    console.log('[AuthService] Access token before refresh:', accessToken);
 
     if (!accessToken || this.jwtHelper.isTokenExpired(accessToken)) {
       console.warn('[AuthService] No valid access token. Cannot refresh.');
@@ -122,7 +121,7 @@ export class AuthService {
       .post<AuthResponse>(`${this.baseUrl}/refresh-token`, { accessToken }, { withCredentials: true })
       .pipe(
         tap((res) => {
-          console.log('[AuthService] Refresh response:', res);
+          
           if (res.isSuccess) {
             localStorage.setItem(this.tokenKey, res.accessToken);
             this._isAuthenticated.next(true);
@@ -147,6 +146,8 @@ export class AuthService {
     this.stopRefreshTimer();
 
     const expiresAt = this.jwtHelper.getTokenExpirationDate(token);
+    
+    
     if (!expiresAt) return;
 
     const timeout = expiresAt.getTime() - Date.now() - 60 * 1000; // 1 minute before expiry

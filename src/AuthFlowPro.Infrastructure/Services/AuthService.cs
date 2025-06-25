@@ -172,8 +172,10 @@ public class AuthService : IAuthService
         var newAccessToken = await _tokenService.GenerateTokenAsync(user);
         var newRefreshToken = _tokenService.GenerateRefreshToken(user.Id);
 
-        user.RefreshTokens.Add(newRefreshToken);
-        await _userManager.UpdateAsync(user);
+        _context.RefreshTokens.Add(newRefreshToken);
+        await _context.SaveChangesAsync();
+        // user.RefreshTokens.Add(newRefreshToken);
+        // await _userManager.UpdateAsync(user);
 
         return new AuthResult
         {
