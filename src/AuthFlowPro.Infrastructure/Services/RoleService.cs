@@ -1,6 +1,8 @@
 ﻿using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Application.DTOs.Identity;
 using Microsoft.AspNetCore.Identity;
+using AuthFlowPro.Application.Permission;
+
 
 namespace AuthFlowPro.Infrastructure.Services;
 
@@ -61,4 +63,43 @@ public class RoleService : IRoleService
 
         return true;
     }
+
+    public async Task<bool> EditRoleAsync(EditRoleRequest request)
+    {
+        var role = await _roleManager.FindByNameAsync(request.OldRoleName);
+        if (role == null) return false;
+
+        if (!string.Equals(role.Name, request.NewRoleName, StringComparison.OrdinalIgnoreCase))
+        {
+            role.Name = request.NewRoleName;
+            var result = await _roleManager.UpdateAsync(role);
+            if (!result.Succeeded) return false;
+        }
+
+        // Clear old permissions and assign new ones
+        var currentClaims = await _roleManager.GetClaimsAsync(role);
+        foreach (var claim in currentClaims.Where(c => c.Type == "permission"))
+            await _roleManager.RemoveClaimAsync(role, claim);
+
+        foreach (var perm in request.Permissions)
+            await _roleManager.AddClaimAsync(role, new System.Security.Claims.Claim("permission", perm));
+
+        return true;
+    }
+
+    public async Task<bool> DeleteRoleAsync(string roleName)
+    {
+        var role = await _roleManager.FindByNameAsync(roleName);
+        if (role == null) return false;
+
+        var result = await _roleManager.DeleteAsync(role);
+        return result.Succeeded;
+    }
+
+
+    public Task<List<string>> GetAllPermissionsAsync()
+{
+    // This can be replaced with a database or static source
+    return Task.FromResult(Permissions.PermissionHelper.GetAllPermissions());
+}
 }

@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit Role' : 'Create Role' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
+  <mat-form-field appearance="fill" class="full-width" *ngIf="isEditMode">
+    <mat-label>Old Role Name</mat-label>
+    <input matInput formControlName="oldRoleName">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Role Name</mat-label>
+    <input matInput formControlName="roleName">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Permissions</mat-label>
+    <mat-select formControlName="permissions" multiple>
+      <mat-option *ngFor="let perm of availablePermissions" [value]="perm">
+        {{ perm }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">
+      {{ isEditMode ? 'Update' : 'Create' }}
+    </button>
+  </div>
+</form>

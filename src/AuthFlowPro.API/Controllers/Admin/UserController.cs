@@ -3,24 +3,24 @@ using Microsoft.AspNetCore.Mvc;
 using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Application.DTOs.Identity;
 using AuthFlowPro.Application.Permission;
-using AuthFlowPro.Application.DTOs;
+
 
 namespace AuthFlowPro.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-// [Authorize(Policy = Permissions.User.View)]
-public class AdminController : ControllerBase
+[Authorize(Policy = Permissions.User.View)]
+public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
 
-    public AdminController(IUserService userService)
+    public UserController(IUserService userService)
     {
         _userService = userService;
     }
 
     [HttpGet("users")]
-    // [Authorize(Policy = Permissions.User.View)]
+    [Authorize(Policy = Permissions.User.View)]
     public async Task<IActionResult> GetAllUsers()
     {
         var users = await _userService.GetAllUsersAsync();
@@ -28,7 +28,7 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("create-user")]
-    // [Authorize(Policy = Permissions.User.Create)]
+    [Authorize(Policy = Permissions.User.Create)]
     public async Task<IActionResult> CreateUser([FromBody] CreateUserDto user)
     {
         var (success, message) = await _userService.CreateUserAsync(user);
@@ -39,7 +39,7 @@ public class AdminController : ControllerBase
 
 
     [HttpDelete("delete-user/{userId}")]
-    // [Authorize(Policy = Permissions.User.Delete)]
+    [Authorize(Policy = Permissions.User.Delete)]
     public async Task<IActionResult> DeleteUser(Guid userId)
     {
         var (success, message) = await _userService.DeleteUserAsync(userId);
@@ -50,15 +50,15 @@ public class AdminController : ControllerBase
     }
 
     [HttpPut("edit-user")]
-    // [Authorize(Policy = Permissions.User.Edit)]
-    public async Task<IActionResult> EditUser([FromBody] EditUserDto dto)
+    [Authorize(Policy = Permissions.User.Edit)]
+    public async Task<IActionResult> EditUser([FromBody] UserDto dto)
     {
         var success = await _userService.UpdateUserAsync(dto);
         if (!success) return BadRequest("Failed to update user");
         return Ok(new { Message = "User updated successfully" });
     }
 
-    // [Authorize(Policy = Permissions.User.Edit)]
+    [Authorize(Policy = Permissions.User.Edit)]
     [HttpPost("assign-roles")]
     public async Task<IActionResult> AssignRoles(AssignRolesRequest request)
     {

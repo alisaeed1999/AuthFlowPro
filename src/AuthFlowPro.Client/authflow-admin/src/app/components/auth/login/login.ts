@@ -62,7 +62,7 @@ export class LoginComponent {
           next: (res) => {
             if (res.isSuccess) {
               // Save token if needed or just navigate
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/admin/users']);
               this.snackBar.open('login successful!', 'Close', {
                 duration: 3000,
                 horizontalPosition: 'end',

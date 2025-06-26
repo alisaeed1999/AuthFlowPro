@@ -9,7 +9,7 @@ public interface IUserService
     Task<List<UserDto>> GetAllUsersAsync();
     Task<(bool Success, string Message)> CreateUserAsync(CreateUserDto user);
     Task<(bool Success, string Message)> DeleteUserAsync(Guid userId);
-    Task<bool> UpdateUserAsync(EditUserDto user);
+    Task<bool> UpdateUserAsync(UserDto user);
     Task<bool> AssignRolesAsync(AssignRolesRequest request);
 }
 

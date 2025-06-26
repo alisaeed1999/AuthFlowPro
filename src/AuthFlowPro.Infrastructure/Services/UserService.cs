@@ -84,12 +84,12 @@ public class UserService : IUserService
         return (true, "User deleted successfully");
     }
 
-    public async Task<bool> UpdateUserAsync(EditUserDto dto)
+    public async Task<bool> UpdateUserAsync(UserDto dto)
 {
-    var user = await _userManager.FindByIdAsync(dto.Id);
+    var user = await _userManager.FindByIdAsync(dto.Id.ToString());
     if (user == null) return false;
 
-    user.UserName = dto.UserName;
+    user.UserName = dto.userName;
     user.Email = dto.Email;
 
     var updateResult = await _userManager.UpdateAsync(user);

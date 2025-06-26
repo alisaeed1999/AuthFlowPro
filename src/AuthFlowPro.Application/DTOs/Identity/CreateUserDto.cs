@@ -1,4 +1,4 @@
-﻿namespace AuthFlowPro.Application.DTOs;
+﻿namespace AuthFlowPro.Application.DTOs.Identity;
 
 public class CreateUserDto
 {

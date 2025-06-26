@@ -10,3 +10,24 @@
   font-weight: 500;
   font-size: 14px;
 }
+
+.permission-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.permission-badge {
+  background-color: #e0e0e0;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.delete-button {
+  color: #ff0000;
+}
+
+.edit-button {
+  color: #0000ff;
+}

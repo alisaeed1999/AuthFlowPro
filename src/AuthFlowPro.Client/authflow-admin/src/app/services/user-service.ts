@@ -8,7 +8,7 @@ import { UpdateUserRoles } from '../models/update-user-role-model';
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:5063/api/admin';
+  private baseUrl = 'http://localhost:5063/api/user';
 
   constructor(private http: HttpClient) {}
 

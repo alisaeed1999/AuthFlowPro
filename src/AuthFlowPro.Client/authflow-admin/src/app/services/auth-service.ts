@@ -54,7 +54,7 @@ export class AuthService {
             localStorage.setItem(this.tokenKey, res.accessToken);
             this._isAuthenticated.next(true);
             this.startRefreshTimer(res.accessToken);
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/admin/users']);
           }
         }),
         catchError((error) => {
