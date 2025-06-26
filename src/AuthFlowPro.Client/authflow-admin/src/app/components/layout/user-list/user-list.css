@@ -1,0 +1,30 @@
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+.create-btn {
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.snackbar-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.snackbar-error {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.delete-button {
+  color: #ff0000;
+}
+
+.edit-button {
+  color: #0000ff;
+}

@@ -20,4 +20,26 @@ export class UserService {
   updateUserRoles(data: UpdateUserRoles): Observable<any> {
     return this.http.post(`${this.baseUrl}/assign-roles`, data);
   }
+
+  createUser(userData: {
+    userName: string;
+    email: string;
+    password: string;
+    roles: string[];
+  }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/create-user`, userData);
+  }
+
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete-user/${userId}`);
+  }
+
+  editUser(data: {
+    id: string;
+    userName: string;
+    email: string;
+    roles : string[]
+  }): Observable<any> {
+  return this.http.put(`${this.baseUrl}/edit-user`, data);
+}
 }

@@ -2,38 +2,38 @@ import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   Validators,
+  ReactiveFormsModule,
 } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { AuthService } from '../../services/auth-service';
+import { AuthService } from '../../../services/auth-service'; // adjust the path as needed
 
 @Component({
   standalone: true,
-  selector: 'app-login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.css'],
+  selector: 'app-register',
+  templateUrl: './register.html',
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule,
     RouterLink,
     MatSnackBarModule,
   ],
+  styleUrls: ['./register.css'],
 })
-export class LoginComponent {
-  form!: FormGroup;
+
+export class RegisterComponent {
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -42,20 +42,24 @@ export class LoginComponent {
     private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
+      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', Validators.required],
     });
   }
 
   onSubmit() {
     if (
-      this.form.valid 
+      this.form.valid &&
+      this.form.value.password === this.form.value.confirmPassword
     ) {
-      const { email, password } = this.form.value;
+      const { username, email, password } = this.form.value;
 
       this.authService
-        .login({
-          email: this.form.value.email, // note this should match your backend casing
+        .register({
+          email: this.form.value.email,
+          userName: this.form.value.username, // note this should match your backend casing
           password: this.form.value.password,
         })
         .subscribe({
@@ -63,7 +67,7 @@ export class LoginComponent {
             if (res.isSuccess) {
               // Save token if needed or just navigate
               this.router.navigate(['/dashboard']);
-              this.snackBar.open('login successful!', 'Close', {
+              this.snackBar.open('Registration successful!', 'Close', {
                 duration: 3000,
                 horizontalPosition: 'end',
                 verticalPosition: 'top',
@@ -72,7 +76,7 @@ export class LoginComponent {
             } else {
               console.error(res.errors);
               this.snackBar.open(
-                res.errors?.join(', ') || 'login failed',
+                res.errors?.join(', ') || 'Registration failed',
                 'Close',
                 {
                   duration: 4000,

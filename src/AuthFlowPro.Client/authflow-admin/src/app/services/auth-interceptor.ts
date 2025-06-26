@@ -1,10 +1,10 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from './services/auth-service';
+import { AuthService } from './auth-service'; 
 import { HttpRequest, HttpHandlerFn, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of, ReplaySubject, filter, take } from 'rxjs';
 import { catchError, switchMap, from } from 'rxjs';
-import { isTokenExpiringSoon } from './core/utils/jwt-utils'; // adjust path as needed
+import { isTokenExpiringSoon } from '../core/utils/jwt-utils'; // adjust path as needed
 import { Router } from '@angular/router';
 
 let isRefreshing = false;

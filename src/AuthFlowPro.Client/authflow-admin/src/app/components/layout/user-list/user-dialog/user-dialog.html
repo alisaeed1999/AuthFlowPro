@@ -1,0 +1,40 @@
+<h2 mat-dialog-title class="title">Create New User</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="dialog-form">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="userName">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" type="email">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width" *ngIf="!isEditMode">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width" *ngIf="!isEditMode">
+    <mat-label>Confirm Password</mat-label>
+    <input matInput formControlName="confirmPassword" type="password">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+  <mat-label>Roles</mat-label>
+  <mat-select formControlName="roles" multiple>
+    <mat-option *ngFor="let role of availableRoles" [value]="role">
+      
+        {{ role }}
+      
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+  <div class="actions">
+    <button mat-button type="button" (click)="onCancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">
+      {{isEditMode ? 'Edit' :  'Create'}}</button>
+  </div>
+</form>

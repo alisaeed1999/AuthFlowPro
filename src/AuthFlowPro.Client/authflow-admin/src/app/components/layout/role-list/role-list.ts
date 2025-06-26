@@ -19,26 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class RoleListComponent {
   displayedColumns: string[] = ['name', 'permissions', 'actions'];
-  roles = [
-    {
-      name: 'Admin',
-      permissions: ['View Users', 'Create Users', 'Delete Users']
-    },
-    {
-      name: 'Manager',
-      permissions: ['View Products', 'Create Products']
-    },
-    {
-      name: 'Basic',
-      permissions: ['View Products']
-    }
-  ];
+  
 
-  editRole(roleName: string) {
-    console.log('Edit:', roleName);
-  }
-
-  deleteRole(roleName: string) {
-    console.log('Delete:', roleName);
-  }
+  
 }
