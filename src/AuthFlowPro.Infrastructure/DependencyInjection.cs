@@ -1,4 +1,3 @@
-﻿
 using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Domain.Entities;
 using AuthFlowPro.Infrastructure.Data;
@@ -25,12 +24,16 @@ public static class DependencyInjection
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
 
+        // Register services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IOrganizationService, OrganizationService>();
+        services.AddScoped<ISubscriptionService, SubscriptionService>();
+        services.AddScoped<IAuditService, AuditService>();
+        services.AddScoped<INotificationService, NotificationService>();
 
         return services;
     }
-
 }

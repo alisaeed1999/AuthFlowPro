@@ -11,7 +11,6 @@ using AuthFlowPro.Application.Permission;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices();
@@ -19,43 +18,25 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
-
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-    .AddJwtBearer(options =>
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
-            ClockSkew = TimeSpan.Zero // optional: prevents time drift allowing expired tokens briefly
-        };
-
-        // Optional: Handle expired tokens
-        // options.Events = new JwtBearerEvents
-        // {
-        //     OnAuthenticationFailed = context =>
-        //     {
-        //         if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
-        //         {
-        //             context.Response.StatusCode = 401;
-        //             context.Response.Headers.Add("Token-Expired", "true");
-        //         }
-
-        //         return Task.CompletedTask;
-        //     }
-        // };
-    });
-
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!)),
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 builder.Services.AddAuthorization(options =>
 {
@@ -69,7 +50,7 @@ builder.Services.AddAuthorization(options =>
     }
 });
 
-builder.Services.AddEndpointsApiExplorer(); // Required
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
@@ -79,19 +60,21 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
               .AllowAnyMethod()
-              .AllowCredentials(); // If you're using cookies or credentials
+              .AllowCredentials();
     });
 });
 
 var app = builder.Build();
 
-
-
+// Seed database
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    var context = services.GetRequiredService<AppDbContext>();
+    
     await DbSeeder.SeedDefaultRolesAndPermissionsAsync(roleManager);
+    await DbSeeder.SeedPlansAsync(context);
 }
 
 await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
@@ -99,29 +82,18 @@ await DbSeeder.SeedAdminAsync(app.Services, builder.Configuration);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthFlowPro API v1");
     });
-
 }
 
 app.UseCors("AllowAngularDev");
-
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
-// app.MapGet("/api/Test", () => "Hello from Program.cs");
-
-
-
 app.Run();
-
-
