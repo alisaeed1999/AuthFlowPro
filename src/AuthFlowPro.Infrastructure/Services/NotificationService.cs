@@ -3,16 +3,20 @@ using AuthFlowPro.Application.Interfaces;
 using AuthFlowPro.Domain.Entities;
 using AuthFlowPro.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using AuthFlowPro.API.Hubs;
 
 namespace AuthFlowPro.Infrastructure.Services;
 
 public class NotificationService : INotificationService
 {
     private readonly AppDbContext _context;
+    private readonly IHubContext<NotificationHub> _hubContext;
 
-    public NotificationService(AppDbContext context)
+    public NotificationService(AppDbContext context, IHubContext<NotificationHub> hubContext)
     {
         _context = context;
+        _hubContext = hubContext;
     }
 
     public async Task<List<NotificationDto>> GetUserNotificationsAsync(Guid userId, bool unreadOnly = false)
@@ -60,6 +64,18 @@ public class NotificationService : INotificationService
 
         _context.Notifications.Add(notification);
         await _context.SaveChangesAsync();
+
+        // Send real-time notification via SignalR
+        await _hubContext.Clients.Group($"user_{request.UserId}")
+            .SendAsync("ReceiveNotification", new
+            {
+                id = notification.Id.ToString(),
+                title = notification.Title,
+                message = notification.Message,
+                type = notification.Type.ToString().ToLower(),
+                timestamp = notification.CreatedAt,
+                actionUrl = notification.ActionUrl
+            });
 
         return (true, "Notification created successfully");
     }

@@ -8,6 +8,15 @@
       <a mat-list-item routerLink="/admin/roles">
         <mat-icon>shield</mat-icon> Roles
       </a>
+      <a mat-list-item routerLink="/admin/organizations">
+        <mat-icon>business</mat-icon> Organizations
+      </a>
+      <a mat-list-item routerLink="/admin/subscriptions">
+        <mat-icon>payment</mat-icon> Subscriptions
+      </a>
+      <a mat-list-item routerLink="/admin/audit-logs">
+        <mat-icon>history</mat-icon> Audit Logs
+      </a>
     </mat-nav-list>
   </mat-sidenav>
 
@@ -18,6 +27,10 @@
       </button>
       <span>📋 AuthFlowPro Panel</span>
       <span class="spacer"></span>
+      
+      <!-- Notifications Component -->
+      <app-notifications></app-notifications>
+      
       <button mat-button [matMenuTriggerFor]="accountMenu">
         <mat-icon>account_circle</mat-icon> Admin
       </button>

@@ -10,6 +10,10 @@ mat-toolbar {
   z-index: 2;
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
 .main-content {
   padding: 20px;
   background-color: #f8f9fa;
@@ -37,6 +41,7 @@ mat-nav-list a.active {
 .menu-btn {
   display: none;
 }
+
 @media (max-width: 768px) {
   mat-sidenav {
     width: 200px;
@@ -45,4 +50,3 @@ mat-nav-list a.active {
     display: inline-flex;
   }
 }
-
