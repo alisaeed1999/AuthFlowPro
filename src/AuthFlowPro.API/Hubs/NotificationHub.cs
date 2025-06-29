@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
-using AuthFlowPro.Infrastructure.Services;
 
 namespace AuthFlowPro.API.Hubs;
 
 [Authorize]
-public class NotificationHub : Hub<INotificationHub>
+public class NotificationHub : Hub
 {
     public async Task JoinUserGroup()
     {
