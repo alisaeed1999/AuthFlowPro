@@ -1,5 +1,6 @@
 using AuthFlowPro.Application.Interfaces;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AuthFlowPro.Infrastructure.Services;
 
