@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AuthFlowPro.API")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3957b1e9dfa0c85c5eed21b170a87f89db16b5fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee1cbc67e4687fa85cf65e153c99276eb992aca6")]
 [assembly: System.Reflection.AssemblyProductAttribute("AuthFlowPro.API")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AuthFlowPro.API")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

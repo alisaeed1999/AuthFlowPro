@@ -43,27 +43,27 @@ public class AuditService : IAuditService
         // Apply filters
         if (!string.IsNullOrEmpty(query.Action))
         {
-            queryable = queryable.Where(al => al.Action.Contains(query.Action));
+            queryable = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<AuditLog, ApplicationUser?>)queryable.Where(al => al.Action.Contains(query.Action));
         }
 
         if (!string.IsNullOrEmpty(query.EntityType))
         {
-            queryable = queryable.Where(al => al.EntityType == query.EntityType);
+            queryable = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<AuditLog, ApplicationUser?>)queryable.Where(al => al.EntityType == query.EntityType);
         }
 
         if (query.UserId.HasValue)
         {
-            queryable = queryable.Where(al => al.UserId == query.UserId);
+            queryable = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<AuditLog, ApplicationUser?>)queryable.Where(al => al.UserId == query.UserId);
         }
 
         if (query.FromDate.HasValue)
         {
-            queryable = queryable.Where(al => al.CreatedAt >= query.FromDate);
+            queryable = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<AuditLog, ApplicationUser?>)queryable.Where(al => al.CreatedAt >= query.FromDate);
         }
 
         if (query.ToDate.HasValue)
         {
-            queryable = queryable.Where(al => al.CreatedAt <= query.ToDate);
+            queryable = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<AuditLog, ApplicationUser?>)queryable.Where(al => al.CreatedAt <= query.ToDate);
         }
 
         var totalCount = await queryable.CountAsync();
