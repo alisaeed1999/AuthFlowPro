@@ -1,14 +1,13 @@
 using AuthFlowPro.Application.Interfaces;
 using Microsoft.AspNetCore.SignalR;
-using AuthFlowPro.API.Hubs;
 
 namespace AuthFlowPro.Infrastructure.Services;
 
 public class NotificationHubService : INotificationHubService
 {
-    private readonly IHubContext<NotificationHub> _hubContext;
+    private readonly IHubContext<Hub> _hubContext;
 
-    public NotificationHubService(IHubContext<NotificationHub> hubContext)
+    public NotificationHubService(IHubContext<Hub> hubContext)
     {
         _hubContext = hubContext;
     }

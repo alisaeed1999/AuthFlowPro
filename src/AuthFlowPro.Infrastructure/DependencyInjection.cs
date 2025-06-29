@@ -32,7 +32,9 @@ public static class DependencyInjection
         services.AddScoped<IOrganizationService, OrganizationService>();
         services.AddScoped<ISubscriptionService, SubscriptionService>();
         services.AddScoped<IAuditService, AuditService>();
-        services.AddScoped<INotificationHubService, NotificationHubService>();
+        
+        // Register notification hub service wrapper
+        services.AddScoped<INotificationHubService, NotificationHubServiceWrapper>();
         
         // Use enhanced notification service with SignalR support
         services.AddScoped<INotificationService, EnhancedNotificationService>();
