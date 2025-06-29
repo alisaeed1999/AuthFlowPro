@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using AuthFlowPro.Infrastructure.Data;
 using AuthFlowPro.Application.Permission;
 using AuthFlowPro.API.Hubs;
+using AuthFlowPro.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

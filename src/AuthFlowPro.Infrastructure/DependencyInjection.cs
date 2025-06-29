@@ -32,7 +32,10 @@ public static class DependencyInjection
         services.AddScoped<IOrganizationService, OrganizationService>();
         services.AddScoped<ISubscriptionService, SubscriptionService>();
         services.AddScoped<IAuditService, AuditService>();
-        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<INotificationHubService, NotificationHubService>();
+        
+        // Use enhanced notification service with SignalR support
+        services.AddScoped<INotificationService, EnhancedNotificationService>();
 
         return services;
     }
