@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: authflowpro-db
+    environment:
+      POSTGRES_DB: authflowdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Ali01125908919
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - authflowpro-network
+
+  # .NET API
+  api:
+    build:
+      context: .
+      dockerfile: src/AuthFlowPro.API/Dockerfile
+    container_name: authflowpro-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=authflowdb;Username=postgres;Password=Ali01125908919
+    ports:
+      - "5063:5063"
+      - "7084:7084"
+    depends_on:
+      - postgres
+    networks:
+      - authflowpro-network
+
+  # Angular Frontend
+  frontend:
+    build:
+      context: ./src/AuthFlowPro.Client/authflow-admin
+      dockerfile: Dockerfile
+    container_name: authflowpro-frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - api
+    networks:
+      - authflowpro-network
+
+volumes:
+  postgres_data:
+
+networks:
+  authflowpro-network:
+    driver: bridge
