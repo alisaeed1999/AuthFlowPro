@@ -164,4 +164,20 @@ export class AuthService {
       clearTimeout(this.refreshTimeout);
     }
   }
+
+  getCurrentUser(): { email: string; userName: string , role : string } | null {
+  const token = this.getToken();
+  if (!token || this.jwtHelper.isTokenExpired(token)) {
+    return null;
+  }
+
+  const decodedToken: any = this.jwtHelper.decodeToken(token);
+  console.log(decodedToken);
+  
+  return {
+    email: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+    userName: decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
+    role: decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
+ };
+}
 }

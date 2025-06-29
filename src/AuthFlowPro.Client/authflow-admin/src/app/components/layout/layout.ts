@@ -10,6 +10,7 @@ import { RouterOutlet } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { SignalRService } from '../../services/signalr.service';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-layout',
@@ -29,8 +30,17 @@ import { SignalRService } from '../../services/signalr.service';
   styleUrl: './layout.css'
 })
 export class LayoutComponent implements OnInit, OnDestroy {
+
+  userName : string = '';
   
-  constructor(private signalRService: SignalRService) {}
+  constructor(private signalRService: SignalRService , private authService : AuthService) {
+    const user = this.authService.getCurrentUser();
+    if(user){
+      this.userName = user.userName;
+      console.log(user);
+      
+    }
+  }
 
   ngOnInit(): void {
     // Initialize SignalR connection when layout loads

@@ -151,3 +151,5 @@
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/AuthFlowPro.API.genruntimeconfig.cache
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/ref/AuthFlowPro.API.dll
 /home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/obj/Debug/net9.0/AuthFlowPro.API.sourcelink.json
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/Newtonsoft.Json.dll
+/home/alisaeed/MyProjects/AuthFlowPro/src/AuthFlowPro.API/bin/Debug/net9.0/System.Net.WebSockets.WebSocketProtocol.dll
