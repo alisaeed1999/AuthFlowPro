@@ -158,7 +158,7 @@ Update `src/AuthFlowPro.API/appsettings.json`:
     "Key": "your-super-secret-jwt-key-here",
     "Issuer": "AuthFlowPro.API",
     "Audience": "AuthFlowPro.Client",
-    "DurationInMinutes": "60"
+    "DurationInMinutes": "10"
   },
   "AdminUser": {
     "Email": "admin@authflowpro.com",
