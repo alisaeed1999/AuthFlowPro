@@ -161,7 +161,7 @@ Update `src/AuthFlowPro.API/appsettings.json`:
     "DurationInMinutes": "10"
   },
   "AdminUser": {
-    "Email": "admin@authflowpro.com",
+    "Email": "admin@example.com",
     "Password": "Admin123$",
     "Roles": ["Admin"]
   }
